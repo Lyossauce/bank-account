@@ -20,10 +20,10 @@ provider:
 
 functions:
   create:
-    handler: ./src/apps/games/handlers/createGame.main
+    handler: ./src/apps/operation/handlers/postDeposit.main
     events:
     - http:
-        path: games
+        path: /accounts/{accountId}/deposit
         method: post
 
 resources:
