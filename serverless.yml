@@ -8,6 +8,8 @@ plugins:
   - serverless-webpack # must be the first of the list
   - serverless-dynamodb-local
   - serverless-offline # must be the last of the list
+  - serverless-plugin-offline-dynamodb-stream
+
 
 provider:
   name: aws
@@ -23,10 +25,10 @@ functions:
 
 resources:
   Resources:
-    GamesTable:
+    AccountTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Games
+        TableName: ${self:provider.environment.accountsTableName}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -34,6 +36,30 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+
+    OperationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.operationsTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: _accountId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+        - IndexName: accountIndex
+          KeySchema:
+            - AttributeName: _accountId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
 
 custom:
   webpack:
