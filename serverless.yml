@@ -81,8 +81,8 @@ custom:
       noStart: true
       migrate: true
       seed: true
-  seed:
-    default:
-      sources:
-      - table: ${self:provider.environment.accountsTableName}
-        sources: [./seeds/account.json]
+    seed:
+      default:
+        sources:
+        - table: ${self:provider.environment.accountsTableName}
+          sources: [./seeds/account.json]

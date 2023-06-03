@@ -33,6 +33,7 @@
     "test"
   ],
   "dependencies": {
+    "joi": "17.9.2",
     "serverless-plugin-offline-dynamodb-stream": "1.0.20"
   }
 }
