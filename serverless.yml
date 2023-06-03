@@ -20,7 +20,7 @@ provider:
 
 functions:
   create:
-    handler: ./src/apps/operation/handlers/postDeposit.main
+    handler: ./src/apps/operations/handlers/postDeposit.main
     events:
     - http:
         path: /accounts/{accountId}/deposit
@@ -80,3 +80,9 @@ custom:
       inMemory: true
       noStart: true
       migrate: true
+      seed: true
+  seed:
+    default:
+      sources:
+      - table: ${self:provider.environment.accountsTableName}
+        sources: [./seeds/account.json]
