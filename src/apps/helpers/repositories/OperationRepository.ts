@@ -14,7 +14,7 @@ export const OperationRepository = {
  */
   createOne: async (record: OperationDbRecord): Promise<void> => {
     const param : PutItemCommandInput = {
-      TableName: process.env.accountTableName,
+      TableName: process.env.operationsTableName,
       Item: marshall(record),
     };
 

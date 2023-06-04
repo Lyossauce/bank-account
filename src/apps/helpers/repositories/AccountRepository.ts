@@ -15,7 +15,7 @@ export const AccountRepository = {
  */
   getOne: async (id: string): Promise<AccountDbRecord | undefined> => {
     const param : GetItemCommandInput = {
-      TableName: process.env.accountTableName,
+      TableName: process.env.accountsTableName,
       Key: marshall({ id }),
     };
 
@@ -35,17 +35,17 @@ export const AccountRepository = {
  */
   updateBalance: async (id: string, amount: number, type: OperationType): Promise<number> => {
     const params : UpdateItemCommandInput =  {
-      TableName: process.env.accountTableName,
+      TableName: process.env.accountsTableName,
       Key: marshall({ id }),
       ExpressionAttributeValues: marshall({
         ':increment': amount * (type === 'DEPOSIT' ? 1 : -1),
-        ':minimum': 0,
+        ':minimum': type === 'WITHDRAWAL' ? amount : 0,
       }),
       ExpressionAttributeNames: {
         '#balance': 'balance',
       },
       UpdateExpression: 'SET #balance = #balance + :increment',
-      ConditionExpression: '#balance + :increment >= :minimum',
+      ConditionExpression: '#balance >= :minimum',
       ReturnValues: 'UPDATED_NEW',
     };
 

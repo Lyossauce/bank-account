@@ -22,7 +22,7 @@ export const postDepositValidator = async (request: APIGatewayProxyEvent):  Prom
 
   return {
     ...body,
-    playerId: request.pathParameters?.accountId as string,
+    accountId: request.pathParameters?.accountId as string,
   };
 };
 
