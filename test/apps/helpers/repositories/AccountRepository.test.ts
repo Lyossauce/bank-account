@@ -1,9 +1,9 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import { marshall } from '@aws-sdk/util-dynamodb';
-import { AccountDbRecord } from '../../../src/models/DBRecords';
-import { AccountRepository } from '../../../src/apps/helpers/repositories/AccountRepository';
-import { OperationType } from '../../../src/models/operation';
+import { AccountDbRecord } from '../../../../src/models/DBRecords';
+import { AccountRepository } from '../../../../src/apps/helpers/repositories/AccountRepository';
+import { OperationType } from '../../../../src/models/operation';
 
 // @ts-ignore
 const dbMock = mockClient(DynamoDBClient);
