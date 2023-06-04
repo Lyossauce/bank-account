@@ -31,7 +31,7 @@ export const getOperationsController = async (request: APIGatewayProxyEvent) => 
     body: JSON.stringify({
       results: operations.map((operation: OperationDbRecord) => {
         return {
-          date: new Date(operation.date).toISOString(),
+          date: operation.date,
           amount: operation.amount,
           balance: operation.balance,
           type: operation.type,

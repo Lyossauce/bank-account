@@ -36,7 +36,7 @@ export const OperationRepository = {
         ':accountId': accountId,
       }),
       ExpressionAttributeNames: { '#accountId': '_accountId' },
-      ScanIndexForward: true,
+      ScanIndexForward: false,
     };
 
     const output: QueryCommandOutput = await getClient().send(new QueryCommand(params));
