@@ -30,6 +30,12 @@ functions:
     - http:
         path: /accounts/{accountId}/withdrawal
         method: post
+  getOperations:
+    handler: ./src/apps/operations/handlers/getOperations.main
+    events:
+    - http:
+        path: /accounts/{accountId}/operations
+        method: get
 
 resources:
   Resources:
