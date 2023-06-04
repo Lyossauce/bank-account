@@ -24,6 +24,12 @@ functions:
     - http:
         path: /accounts/{accountId}/deposit
         method: post
+  postWithdrawal:
+    handler: ./src/apps/operations/handlers/postWithdrawal.main
+    events:
+    - http:
+        path: /accounts/{accountId}/withdrawal
+        method: post
 
 resources:
   Resources:

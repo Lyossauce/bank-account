@@ -3,7 +3,7 @@ import * as postDepositValidator from '../../../../src/apps/helpers/validators/p
 import * as createAndApplyOperation from '../../../../src/apps/operations/services/createAndApplyOperation';
 import { AccountRepository } from '../../../../src/apps/helpers/repositories/AccountRepository';
 import { AccountDbRecord } from '../../../../src/models/DBRecords';
-import { postDepositController } from '../../../../src/apps/operations/controllers/postDepositController';
+import { postDepositController } from '../../../../src/apps/operations/controllers/postOperationController';
 
 describe('Post Operation Controller', () => {
 
