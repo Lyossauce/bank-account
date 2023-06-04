@@ -1,5 +1,6 @@
 import { AccountDbRecord, OperationDbRecord } from '../../../models/DBRecords';
 import { OperationType, postOperationInput } from '../../../models/operation';
+import { AccountRepository } from '../../helpers/repositories/AccountRepository';
 import { randomUUID } from 'crypto';
 
 /**
@@ -11,7 +12,9 @@ import { randomUUID } from 'crypto';
  *
  */
 export const createAndApplyOperation = async (input: postOperationInput, type: OperationType, account: AccountDbRecord): Promise<string> => {
-  const newBalance = type === 'DEPOSIT' ? input.amount + account.balance : account.balance - input.amount;
+  // Eventuellement retourner la balance
+  const newBalance = await AccountRepository.updateBalance(account.id, operation.amount, type);
+
 
   const operation : OperationDbRecord = {
     id: randomUUID(),
@@ -21,9 +24,6 @@ export const createAndApplyOperation = async (input: postOperationInput, type: O
     amount: input.amount,
     balance: newBalance,
   };
-
-  // Eventuellement retourner la balance
-  await AccountRepository.updateBalance(operation.amount, type);
 
   await OperationRepository.createOne(operation);
 
