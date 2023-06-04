@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "5cea930b-1cca-4982-a68d-6ab72dac9130",
+		"name": "Postam collection banking account",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21779104",
+		"_collection_link": "https://lively-shuttle-602799.postman.co/workspace/My-Workspace~8a5e7257-9a2a-4410-846c-004953152825/collection/21779104-5cea930b-1cca-4982-a68d-6ab72dac9130?action=share&creator=21779104&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "POST deposit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 1500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/local/accounts/account/deposit",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"local",
+						"accounts",
+						"account",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST withdrawal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 900\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/local/accounts/account/withdrawal",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"local",
+						"accounts",
+						"account",
+						"withdrawal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET operations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/local/accounts/account/operations",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"local",
+						"accounts",
+						"account",
+						"operations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
