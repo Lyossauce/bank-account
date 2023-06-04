@@ -25,14 +25,18 @@ export const getOperationsController = async (request: APIGatewayProxyEvent) => 
 
   const operations: OperationDbRecord[] = await OperationRepository.getByAccountId(accountId);
 
+
   return {
-    results: operations.map((operation: OperationDbRecord) => {
-      return {
-        date: operation.date,
-        amount: operation.amount,
-        balance: operation.balance,
-        type: operation.type,
-      };
+    statusCode: 200,
+    body: JSON.stringify({
+      results: operations.map((operation: OperationDbRecord) => {
+        return {
+          date: new Date(operation.date).toISOString(),
+          amount: operation.amount,
+          balance: operation.balance,
+          type: operation.type,
+        };
+      }),
     }),
   };
 };
