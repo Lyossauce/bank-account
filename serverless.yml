@@ -1,4 +1,4 @@
-service: starter
+service: banking-account
 
 variablesResolutionMode: 20210326
 
@@ -8,22 +8,21 @@ plugins:
   - serverless-webpack # must be the first of the list
   - serverless-dynamodb-local
   - serverless-offline # must be the last of the list
-  - serverless-plugin-offline-dynamodb-stream
 
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs14.x
   environment: 
     accountsTableName: Account
     operationsTableName: Operations
 
 functions:
-  create:
-    handler: ./src/apps/games/handlers/createGame.main
+  postDeposit:
+    handler: ./src/apps/operations/handlers/postDeposit.main
     events:
     - http:
-        path: games
+        path: /accounts/{accountId}/deposit
         method: post
 
 resources:
@@ -49,6 +48,8 @@ resources:
             AttributeType: S
           - AttributeName: _accountId
             AttributeType: S
+          - AttributeName: date
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -58,6 +59,8 @@ resources:
           KeySchema:
             - AttributeName: _accountId
               KeyType: HASH
+            - AttributeName: date
+              KeyType: RANGE
           Projection:
             ProjectionType: ALL
         StreamSpecification:
@@ -80,3 +83,9 @@ custom:
       inMemory: true
       noStart: true
       migrate: true
+      seed: true
+    seed:
+      default:
+        sources:
+        - table: ${self:provider.environment.accountsTableName}
+          sources: [./seeds/account.json]
