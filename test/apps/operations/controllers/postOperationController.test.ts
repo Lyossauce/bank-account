@@ -1,9 +1,9 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import * as postDepositValidator from '../../../../src/apps/helpers/validators/postDepositValidator';
+import * as postDepositValidator from '../../../../src/apps/helpers/validators/postOperationValidator';
 import * as createAndApplyOperation from '../../../../src/apps/operations/services/createAndApplyOperation';
 import { AccountRepository } from '../../../../src/apps/helpers/repositories/AccountRepository';
 import { AccountDbRecord } from '../../../../src/models/DBRecords';
-import { postDepositController } from '../../../../src/apps/operations/controllers/postDepositController';
+import { postOperationController } from '../../../../src/apps/operations/controllers/postOperationController';
 
 describe('Post Operation Controller', () => {
 
@@ -29,10 +29,9 @@ describe('Post Operation Controller', () => {
     let createAndApplyOperationSpy: jest.SpyInstance;
 
     beforeAll(() => {
-        postDepositValidatorSpy = jest.spyOn(postDepositValidator, 'postDepositValidator');
+        postDepositValidatorSpy = jest.spyOn(postDepositValidator, 'postOperationValidator');
         getOneAccountSpy = jest.spyOn(AccountRepository, 'getOne');
         createAndApplyOperationSpy = jest.spyOn(createAndApplyOperation, 'createAndApplyOperation');
-        createAndApplyOperationSpy.mockResolvedValue('id');
     });
 
     it('should return 201 with operation id', async () => {
@@ -48,8 +47,9 @@ describe('Post Operation Controller', () => {
 
       postDepositValidatorSpy.mockResolvedValue(input);
       getOneAccountSpy.mockResolvedValue(account);
+      createAndApplyOperationSpy.mockResolvedValue('id');
 
-      const response = await postDepositController(request);
+      const response = await postOperationController(request, 'DEPOSIT');
 
       expect(response).toStrictEqual(expectedOutput);
       expect(postDepositValidatorSpy).toHaveBeenCalledTimes(1);
@@ -75,7 +75,7 @@ describe('Post Operation Controller', () => {
 
       postDepositValidatorSpy.mockRejectedValue(error);
 
-      const response = await postDepositController(request);
+      const response = await postOperationController(request, 'DEPOSIT');
 
       expect(response).toStrictEqual(expectedOutput);
       expect(postDepositValidatorSpy).toHaveBeenCalledTimes(1);
@@ -98,7 +98,7 @@ describe('Post Operation Controller', () => {
         postDepositValidatorSpy.mockResolvedValue(input);
         getOneAccountSpy.mockResolvedValue(undefined);
   
-        const response = await postDepositController(request);
+        const response = await postOperationController(request, 'DEPOSIT');
   
         expect(response).toStrictEqual(expectedOutput);
         expect(postDepositValidatorSpy).toHaveBeenCalledTimes(1);
@@ -106,6 +106,34 @@ describe('Post Operation Controller', () => {
         expect(getOneAccountSpy).toHaveBeenCalledTimes(1);
         expect(getOneAccountSpy).toHaveBeenCalledWith(input.accountId);
         expect(createAndApplyOperationSpy).toHaveBeenCalledTimes(0);
+      });
+
+      it('should return 500 when create and apply throw an error', async () => {
+        request = {
+        } as APIGatewayProxyEvent;
+  
+        const expectedOutput = {
+          statusCode: 500,
+          body: JSON.stringify({
+            message: 'error',
+          }),
+        };
+
+        const error = new Error('error')
+  
+        postDepositValidatorSpy.mockResolvedValue(input);
+        getOneAccountSpy.mockResolvedValue(account);
+        createAndApplyOperationSpy.mockRejectedValue(error);
+  
+        const response = await postOperationController(request, 'DEPOSIT');
+  
+        expect(response).toStrictEqual(expectedOutput);
+        expect(postDepositValidatorSpy).toHaveBeenCalledTimes(1);
+        expect(postDepositValidatorSpy).toHaveBeenCalledWith(request);
+        expect(getOneAccountSpy).toHaveBeenCalledTimes(1);
+        expect(getOneAccountSpy).toHaveBeenCalledWith(input.accountId);
+        expect(createAndApplyOperationSpy).toHaveBeenCalledTimes(1);
+        expect(createAndApplyOperationSpy).toHaveBeenCalledWith(input, 'DEPOSIT', account);
       });
   });
 });

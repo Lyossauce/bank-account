@@ -3,13 +3,13 @@ import Joi from 'joi';
 import { postOperationInput } from '../../../models/operation';
 
 /**
- * @name postDepositValidator
+ * @name postOperationValidator
  * @description Validate the request
  * @param {APIGatewayProxyEvent} request
  *
  * @returns {Promise<PostPlayerCardInput>}
  */
-export const postDepositValidator = async (request: APIGatewayProxyEvent):  Promise<postOperationInput> => {
+export const postOperationValidator = async (request: APIGatewayProxyEvent):  Promise<postOperationInput> => {
   if (!request.body) throw new Error('Missing body');
 
   const schema = Joi.object({
