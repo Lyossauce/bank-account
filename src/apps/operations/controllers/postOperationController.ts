@@ -2,7 +2,7 @@ import { OperationType, postOperationInput } from '../../../models/operation';
 import { AccountRepository } from '../../helpers/repositories/AccountRepository';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { createAndApplyOperation } from '../services/createAndApplyOperation';
-import { postDepositValidator } from '../../helpers/validators/postDepositValidator';
+import { postOperationValidator } from '../../helpers/validators/postOperationValidator';
 
 /**
  * @name postOperationController
@@ -14,7 +14,7 @@ export const postOperationController = async (request: APIGatewayProxyEvent, typ
 
   let input: postOperationInput;
   try {
-    input = await postDepositValidator(request);
+    input = await postOperationValidator(request);
   } catch (e: any) {
     return {
       statusCode: 400,
@@ -33,13 +33,24 @@ export const postOperationController = async (request: APIGatewayProxyEvent, typ
         message: 'ACCOUNT NOT FOUND',
       }),
     };
+  }
 
+  let id: string;
+  try {
+    id = await createAndApplyOperation(input, type, account);
+  } catch (e: any) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: e.message,
+      }),
+    };
   }
 
   return {
     statusCode: 201,
     body: JSON.stringify({
-      id: await createAndApplyOperation(input, type, account),
+      id,
     }),
   };
 

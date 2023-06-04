@@ -1,9 +1,9 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { postDepositValidator } from "../../../../src/apps/helpers/validators/postDepositValidator";
+import { postOperationValidator } from "../../../../src/apps/helpers/validators/postOperationValidator";
 
 describe('Post Operation Validator', () => {
 
-  describe('postDepositValidator', () => {
+  describe('postOperationValidator', () => {
 
     it('validate and return input', async () => {
 
@@ -17,7 +17,7 @@ describe('Post Operation Validator', () => {
             pathParameters: {accountId: 'account'}
         } as unknown as APIGatewayProxyEvent;
 
-        const input = await postDepositValidator(request);
+        const input = await postOperationValidator(request);
 
         expect(input).toStrictEqual(expectedInput)
     });
@@ -31,7 +31,7 @@ describe('Post Operation Validator', () => {
           const expectedError = new Error('Missing body'); 
     
           await expect(async () => {
-            await postDepositValidator(request);
+            await postOperationValidator(request);
           }).rejects.toThrow(expectedError);
     });
 });
