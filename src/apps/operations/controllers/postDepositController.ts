@@ -3,6 +3,12 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
 import { postDepositValidator } from '../../helpers/validators/postDepositValidator';
 import { postOperationInput } from '../../../models/operation';
 
+/**
+ * @name postDepositController
+ * @description Desposit a given amount into an account
+ * @param {APIGatewayProxyEvent} request
+ *
+ */
 export const postDepositController = async (request: APIGatewayProxyEvent) => {
 
   let input: postOperationInput;

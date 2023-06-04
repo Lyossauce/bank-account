@@ -1,8 +1,16 @@
 import { AccountDbRecord, OperationDbRecord } from '../../../models/DBRecords';
-import { postOperationInput } from '../../../models/operation';
+import { OperationType, postOperationInput } from '../../../models/operation';
 import { randomUUID } from 'crypto';
 
-export const createAndApplyOperation = async (input: postOperationInput, type: 'DEPOSIT' | 'WITHDRAWAL', account: AccountDbRecord): Promise<string> => {
+/**
+ * @name createAndApplyOperation
+ * @description Create the operation and apply the balance change to the account
+ * @param {postOperationInput} input
+ * @param {OperationType} type
+ * @param {AccountDbRecord} account
+ *
+ */
+export const createAndApplyOperation = async (input: postOperationInput, type: OperationType, account: AccountDbRecord): Promise<string> => {
   const newBalance = type === 'DEPOSIT' ? input.amount + account.balance : account.balance - input.amount;
 
   const operation : OperationDbRecord = {

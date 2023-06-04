@@ -1,3 +1,5 @@
+import { OperationType } from "./operation"
+
 export interface AccountDbRecord {
     id: string
     balance: number
@@ -6,7 +8,7 @@ export interface AccountDbRecord {
 export interface OperationDbRecord {
     id: string
     _accountId: string
-    type: 'DEPOSIT' | 'WITHDRAWAL'
+    type: OperationType
     date: string
     amount: number
     balance: number
